@@ -1,78 +1,97 @@
-﻿using System;
-using System.CodeDom;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Mvvm;
 
 namespace PrismPractice.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        // ボタン名
+        private string _leftButtonName = "はい";
+        public string LeftButtonName
+        {
+            get => _leftButtonName;
+        }
+
+        private string _centerButtonName = "戻る";
+        public string CenterButtonName
+        {
+            get => _centerButtonName;
+        }
+
+        private string _rightButtonName = "いいえ";
+        public string RightButtonName
+        {
+            get => _rightButtonName;
+        }
+
         // ボタンの表示非表示
-        // ----------------------------------------------------------------------
-        public bool _yesButtonVisibled = true;
-        public bool YesButtonVisibled
+        public bool _leftButtonVisibled = true;
+        public bool LeftButtonVisibled
         {
-            get { return _yesButtonVisibled; }
-            set { SetProperty(ref _yesButtonVisibled, value); }
+            get { return _leftButtonVisibled; }
+            set { SetProperty(ref _leftButtonVisibled, value); }
         }
 
-        public bool _noButtonVisibled = true;
-        public bool NoButtonVisibled
+        public bool _centerButtonVisibled = false;
+        public bool CenterButtonVisibled
         {
-            get { return _noButtonVisibled; }
-            set { SetProperty(ref _noButtonVisibled, value); }
+            get { return _centerButtonVisibled; }
+            set { SetProperty(ref _centerButtonVisibled, value); }
         }
 
-        public bool _returnButtonVisibled = false;
-        public bool ReturnButtonVisibled
+        public bool _rightButtonVisibled = true;
+        public bool RightButtonVisibled
         {
-            get { return _returnButtonVisibled; }
-            set { SetProperty(ref _returnButtonVisibled, value); }
+            get { return _rightButtonVisibled; }
+            set { SetProperty(ref _rightButtonVisibled, value); }
         }
-        // ----------------------------------------------------------------------
 
+        // ボタン押下時のイベント
+        public DelegateCommand LeftCommand { get; }
+
+        public DelegateCommand CenterCommand { get; }
+
+        public DelegateCommand RightCommand { get; }
+
+        // 表示テキスト
         private static string WEATHER_QUESTION_STR = "こんにちは。今日の天気は良いですか？";
-        private string _message = WEATHER_QUESTION_STR;
+        private string _message= WEATHER_QUESTION_STR;
+        
         public string Message
         {
             get => _message;
             set => SetProperty(ref _message, value);
         }
 
-        public DelegateCommand YesCommand {get;}
-        public DelegateCommand NoCommand {get;}
-
-        public DelegateCommand ReturnCommand { get; }
-
         public MainWindowViewModel()
         {
-            YesCommand = new DelegateCommand(DoYes);
-            NoCommand = new DelegateCommand(DoNo);
-            ReturnCommand = new DelegateCommand(DoReturn);
+            LeftCommand = new DelegateCommand(DoLeft);
+            CenterCommand = new DelegateCommand(DoCenter);
+            RightCommand = new DelegateCommand(DoRight);
         }
 
-        private void DoYes()
+        private void DoLeft()
         {
             Message = "それは良かったです！気分が良いですね。";
-            YesButtonVisibled = false;
-            NoButtonVisibled = false;
-            ReturnButtonVisibled = true;
+            LeftButtonVisibled = false;
+            RightButtonVisibled = false;
+            CenterButtonVisibled = true;
         }
 
-        private void DoNo()
-        {
-            Message = "あら、それは残念ですね。";
-            YesButtonVisibled = false;
-            NoButtonVisibled = false;
-            ReturnButtonVisibled = true;
-        }
-
-        private void DoReturn()
+        private void DoCenter()
         {
             Message = WEATHER_QUESTION_STR;
-            YesButtonVisibled = true;
-            NoButtonVisibled = true;
-            ReturnButtonVisibled = false;
+            LeftButtonVisibled = true;
+            RightButtonVisibled = true;
+            CenterButtonVisibled = false;
+        }
+
+        private void DoRight()
+        {
+            Message = "あら、それは残念ですね。";
+            LeftButtonVisibled = false;
+            RightButtonVisibled = false;
+            CenterButtonVisibled = true;
         }
     }
 }
