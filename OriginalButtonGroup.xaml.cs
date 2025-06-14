@@ -25,8 +25,6 @@ namespace PrismPractice
         public OriginalButtonGroup()
         {
             InitializeComponent();
-
-            
         }
     }
 }
